@@ -7,5 +7,6 @@ resource "render_postgres" "arithmetic_db" {
   database_name = "arithmetic_db"
   database_user = "tushar"
 
-  environment_id = render_project.p466.environments["development"].id
+  environment_id = "your-actual-environment-id"  # from Render dashboard
+
 }
