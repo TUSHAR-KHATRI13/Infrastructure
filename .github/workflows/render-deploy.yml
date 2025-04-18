@@ -1,0 +1,36 @@
+name: Deploy Render DB via Terraform
+
+on:
+  push:
+    branches: [ master ]  # Change if your branch is main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Terraform
+      uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_version: 1.11.0  # match your version
+
+    - name: Terraform Init
+      run: terraform init
+      working-directory: ./render
+
+    - name: Terraform Plan
+      run: terraform plan
+      working-directory: ./render
+      env:
+        RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
+        RENDER_OWNER_ID: ${{ secrets.RENDER_OWNER_ID }}
+
+    - name: Terraform Apply
+      run: terraform apply -auto-approve
+      working-directory: ./render
+      env:
+        RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
+        RENDER_OWNER_ID: ${{ secrets.RENDER_OWNER_ID }}
